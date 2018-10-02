@@ -1,73 +1,73 @@
-class ZCL_PI_STATIC definition
+class zcl_pi_static definition
   public
   final
   create public .
 
 *"* public components of class ZCL_PI_STATIC
 *"* do not include other source files here!!!
-public section.
+  public section.
 
-  class-methods GET_GUID
-    importing
-      !IR_PROXY type ref to OBJECT optional
-    returning
-      value(E_GUID) type GUID
-    raising
-      ZCX_GENERIC .
-  class-methods GET_SYSTEM
-    returning
-      value(E_SYSTEM) type TEXT60
-    raising
-      ZCX_GENERIC .
-  class-methods GET_ATTACHMENT
-    importing
-      !I_ID type SIMPLE optional
-    returning
-      value(E_DATA) type XSTRING
-    raising
-      ZCX_GENERIC .
-  class-methods GET_ATTACHMENTS
-    returning
-      value(ET_ATTACHMENTS) type STRINGTAB
-    raising
-      ZCX_GENERIC .
-  class-methods ADD_ATTACHMENT
-    importing
-      !IR_PROXY type ref to OBJECT
-      !I_ID type SIMPLE optional
-      !I_FILE type SIMPLE optional
-      !I_DATA type XSTRING
-    returning
-      value(E_ID) type STRING
-    raising
-      ZCX_GENERIC .
-  class-methods SET_QUEUE_NAME
-    importing
-      !IR_PROXY type ref to OBJECT
-      !I_NAME type SIMPLE
-    raising
-      ZCX_GENERIC .
-  class-methods GET_MESSAGE_URL
-    importing
-      !I_GUID type GUID
-    returning
-      value(E_URL) type STRING
-    raising
-      ZCX_GENERIC .
-  class-methods SHOW_MESSAGE
-    importing
-      !I_GUID type GUID
-    raising
-      ZCX_GENERIC .
-  class-methods GET_OUTPUT_XML
-    importing
-      !I_CLASS type SIMPLE
-      !I_METHOD type SIMPLE
-      !IS_DATA type DATA
-    returning
-      value(E_XML) type STRING
-    raising
-      ZCX_GENERIC .
+    class-methods get_guid
+      importing
+        !ir_proxy     type ref to object optional
+      returning
+        value(e_guid) type guid
+      raising
+        zcx_generic .
+    class-methods get_system
+      returning
+        value(e_system) type text60
+      raising
+        zcx_generic .
+    class-methods get_attachment
+      importing
+        !i_id         type simple optional
+      returning
+        value(e_data) type xstring
+      raising
+        zcx_generic .
+    class-methods get_attachments
+      returning
+        value(et_attachments) type stringtab
+      raising
+        zcx_generic .
+    class-methods add_attachment
+      importing
+        !ir_proxy   type ref to object
+        !i_id       type simple optional
+        !i_file     type simple optional
+        !i_data     type xstring
+      returning
+        value(e_id) type string
+      raising
+        zcx_generic .
+    class-methods set_queue_name
+      importing
+        !ir_proxy type ref to object
+        !i_name   type simple
+      raising
+        zcx_generic .
+    class-methods get_message_url
+      importing
+        !i_guid      type guid
+      returning
+        value(e_url) type string
+      raising
+        zcx_generic .
+    class-methods show_message
+      importing
+        !i_guid type guid
+      raising
+        zcx_generic .
+    class-methods get_output_xml
+      importing
+        !i_class     type simple
+        !i_method    type simple
+        !is_data     type data
+      returning
+        value(e_xml) type string
+      raising
+        zcx_generic .
   protected section.
 *"* protected components of class ZCL_PI_STATIC
 *"* do not include other source files here!!!
@@ -106,10 +106,11 @@ CLASS ZCL_PI_STATIC IMPLEMENTATION.
         endif.
 
         data lr_attachment type ref to if_ai_attachment.
-        lr_attachment = lr_protocol->get_attachment_from_binary(
-          name = l_id
-          type = l_type
-          data = i_data ).
+        lr_attachment =
+          lr_protocol->get_attachment_from_binary(
+            name = l_id
+            type = l_type
+            data = i_data ).
 
         data lt_attachments type prx_attach.
         lt_attachments = lr_protocol->get_attachments( ).
@@ -376,7 +377,8 @@ CLASS ZCL_PI_STATIC IMPLEMENTATION.
     lt_messages = lr_bdc->run( 'SXI_MONITOR' ).
 
     loop at lt_messages transporting no fields
-      where msgty ca 'EAX'.
+      where
+        msgty ca 'EAX'.
       zcx_generic=>raise(
         it_messages = lt_messages ).
     endloop.
